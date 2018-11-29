@@ -1,3 +1,4 @@
+--index-url https://pypi.fury.io/andy-br/ --extra-index-url https://pypi.org/simple/private-package=0.0.1
 setuptools >=30.3
 Sphinx ~=1.7
 sphinx-bootstrap-theme ~=0.6
