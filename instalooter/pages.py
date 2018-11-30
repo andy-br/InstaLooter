@@ -34,7 +34,7 @@ class PageIterator(typing.Iterator[typing.Dict[typing.Text, typing.Any]]):
     """
 
     PAGE_SIZE = 50
-    INTERVAL = 10
+    INTERVAL = 20
 
     _BASE_URL = "https://www.instagram.com/graphql/query/"
     _section_generic = NotImplemented    # type: Text
