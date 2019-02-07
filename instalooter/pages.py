@@ -34,7 +34,7 @@ class PageIterator(typing.Iterator[typing.Dict[typing.Text, typing.Any]]):
     """
 
     PAGE_SIZE = 50
-    INTERVAL = 40
+    INTERVAL = 50
 
     _BASE_URL = "https://www.instagram.com/graphql/query/"
     _section_generic = NotImplemented    # type: Text
@@ -74,7 +74,7 @@ class PageIterator(typing.Iterator[typing.Dict[typing.Text, typing.Any]]):
             except KeyError as e:
                 if data.get('message') == 'rate limited':
                     raise RuntimeError("Query rate exceeded (wait before next run)")
-                time.sleep(10)
+                time.sleep(100)
             # Sleep before next query
             time.sleep(self.INTERVAL)
 
