@@ -10,6 +10,7 @@ import itertools
 import math
 import time
 import typing
+import random
 
 import six
 from requests import Session
@@ -34,7 +35,7 @@ class PageIterator(typing.Iterator[typing.Dict[typing.Text, typing.Any]]):
     """
 
     PAGE_SIZE = 50
-    INTERVAL = 50
+    INTERVAL = print random.randrange(45, 65, 1)
 
     _BASE_URL = "https://www.instagram.com/graphql/query/"
     _section_generic = NotImplemented    # type: Text
