@@ -7,7 +7,6 @@ from __future__ import unicode_literals
 import abc
 import atexit
 import copy
-import functools
 import random
 import re
 import threading
