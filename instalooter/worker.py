@@ -12,6 +12,7 @@ import time
 import requests
 import six
 import tenacity
+import logging
 
 from ._impl import PIL, piexif, json
 
@@ -21,7 +22,7 @@ class InstaDownloader(threading.Thread):
     """
 
     _tenacity_options = {
-        "stop": tenacity.stop_after_attempt(5),
+        "stop": tenacity.stop_after_attempt(10),
         "wait": tenacity.wait_exponential(1, 10),
     }
 
@@ -65,10 +66,13 @@ class InstaDownloader(threading.Thread):
             return
 
         # FIXME: find a way to remove failed temporary downloads
-        with self.destination.open(filename, "wb") as f:
-            with self.session.get(url) as res:
-                f.write(res.content)
-        self._set_time(media, filename)
+        try:
+            with self.destination.open(filename, "wb") as f:
+                with self.session.get(url) as res:
+                    f.write(res.content)
+            self._set_time(media, filename)
+        except:
+            logging.warning("Failed on attempt to download image: " + str(url) + " Retrying")
 
     def _download_video(self, media):
         url = media['video_url']
@@ -78,11 +82,14 @@ class InstaDownloader(threading.Thread):
             return
 
         # FIXME: find a way to remove failed temporary downloads
-        with self.destination.open(filename, "wb") as f:
-            with self.session.get(url) as res:
-                for chunk in res.iter_content(io.DEFAULT_BUFFER_SIZE):
-                    f.write(chunk)
-        self._set_time(media, filename)
+        try:
+            with self.destination.open(filename, "wb") as f:
+                with self.session.get(url) as res:
+                    for chunk in res.iter_content(io.DEFAULT_BUFFER_SIZE):
+                        f.write(chunk)
+            self._set_time(media, filename)
+        except ConnectionResetError:
+            logging.warning("Failed on attempt to download video: " + str(url) + " Retrying")
 
     def _download_sidecar(self, media):
         edges = media.pop('edge_sidecar_to_children')['edges']
