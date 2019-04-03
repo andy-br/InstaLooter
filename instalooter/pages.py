@@ -18,6 +18,8 @@ from requests import Session
 from ._impl import json
 from ._utils import get_shared_data
 
+import tenacity
+
 if typing.TYPE_CHECKING:
     from typing import Any, Dict, Iterator, Iterable, Optional, Text
 
@@ -53,6 +55,7 @@ class PageIterator(typing.Iterator[typing.Dict[typing.Text, typing.Any]]):
         # type: (Optional[Text]) -> Text
         return NotImplemented
 
+    @tenacity(tenacity.stop_after_attempt(10), tenacity.wait_exponential(1, 10))
     def _page_loader(self, session, rhx):
         # type: (Session) -> Iterable[Dict[Text, Dict[Text, Any]]]
         while True:
