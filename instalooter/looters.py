@@ -28,6 +28,8 @@ from .medias import TimedMediasIterator, MediasIterator
 from .pages import ProfileIterator, HashtagIterator
 from .pbar import ProgressBar
 from .worker import InstaDownloader
+import tenacity
+
 
 if typing.TYPE_CHECKING:
     from datetime import datetime
@@ -321,6 +323,7 @@ class InstaLooter(object):
         """
         return self._medias(self.pages(), timeframe)
 
+    @tenacity.retry(tenacity.stop_after_attempt(10), tenacity.wait_exponential(1, 10))
     def get_post_info(self, code):
         # type: (str) -> dict
         """Get media information from a given post code.
