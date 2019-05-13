@@ -36,7 +36,7 @@ class PageIterator(typing.Iterator[typing.Dict[typing.Text, typing.Any]]):
     """An abstract Instagram page iterator.
     """
 
-    PAGE_SIZE = 50
+    PAGE_SIZE = 20
     INTERVAL = random.randrange(50, 75, 1)
 
     _BASE_URL = "https://www.instagram.com/graphql/query/"
